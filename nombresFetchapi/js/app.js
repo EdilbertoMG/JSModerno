@@ -31,30 +31,28 @@ function cargarNombre(e) {
         url += `amount=${cantidad}`;
     }
 
-    // Conectar con ajax
-    // Inciar XMLHTTPRequest
-    const xhr = new XMLHttpRequest();
-    //Abrimos la conexion
-    xhr.open('GET', url, true);
-    // Datos e impresion del template
-    xhr.onload = function () {
-        if (this.status === 200) {
-            const nombres = JSON.parse(this.responseText) ;
-            // Generar el html
-            let htmlNombres = '<h2>Nombres Generados</h2>';
+    // Conectar con FechApi
 
-            htmlNombres += '<ul class="lista">';
-                // Imprimir cada nombre
-                nombres.forEach(nombre => {
-                    htmlNombres += `
-                        <li>${nombre.name}</li>
-                    `;
-                });
-            htmlNombres += '</ul>';
+    fetch(url)
+    .then((res)=>{
+        return res.json();
+    })
+    .then((nombres)=>{
+        // Generar el html
+        let htmlNombres = '<h2>Nombres Generados</h2>';
 
-            document.getElementById('resultado').innerHTML = htmlNombres;
-        }
-    }
+        htmlNombres += '<ul class="lista">';
+            // Imprimir cada nombre
+            nombres.forEach(nombre => {
+                htmlNombres += `
+                    <li>${nombre.name}</li>
+                `;
+            });
+        htmlNombres += '</ul>';
 
-    xhr.send();
+        document.getElementById('resultado').innerHTML = htmlNombres;
+    })
+    .catch((error)=>{
+        console.error(error);
+    })
 }
